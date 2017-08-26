@@ -12,7 +12,8 @@ class Dialog : public QDialog
 public:
     explicit Dialog(QWidget *parent = 0);
     ~Dialog();
-//    paintEvent(QPaintEvent*);
+    //    paintEvent(QPaintEvent*);
+    void mainCircle();
 private:
 protected:
      void paintEvent(QPaintEvent *e);
