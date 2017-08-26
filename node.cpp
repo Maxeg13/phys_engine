@@ -8,6 +8,8 @@ node::node(int a, int b)
     vy=0;
     ax=0;
     ay=0;
+    for(int i=0;i<3;i++)
+        clr[i]=rand()%10*25;
 }
 node::node()
 {
@@ -36,17 +38,18 @@ node::checkStuck(myLine& ML)
     if((proj>0)&&(proj<ML.length))
     {
         if((!ML.orient)&&(ortho>0)||(ML.orient)&&(ortho<0))
-           // time to bounce
+            // time to bounce
+            if(fabs(ortho)<6)
         {
-//             qDebug()<<"fuck";
+            //             qDebug()<<"fuck";
             x-=vx;
             y-=vy;
-            proj=vx*ML.ex+vy*ML.ey;
-            ortho=vx*ML.ox+vy*ML.oy;
+            proj=0.999*(vx*ML.ex+vy*ML.ey);
+            ortho=0.999*(vx*ML.ox+vy*ML.oy);
             vx=ML.ex*proj-ML.ox*ortho;
             vy=ML.ey*proj-ML.oy*ortho;
         }
     }
-//    else
-//        qDebug()<<"not_fuck";
+    //    else
+    //        qDebug()<<"not_fuck";
 }

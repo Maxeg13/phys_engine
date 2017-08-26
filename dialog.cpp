@@ -6,7 +6,8 @@
 #include "myline.h"
 #include "node.h"
 //#include "vars.h"
-int nodes_N=140;
+int nodes_N=340;
+int lines_N=5;
 float f;
 QTimer *timer;
 //work* WK;
@@ -26,10 +27,13 @@ Dialog::Dialog(QWidget *parent) :
     //    thread->start();
     _node=new node[nodes_N]();
     for (int i=0;i<nodes_N;i++)
-        _node[i]=node(190+(rand()%10)*20/10.,320+(rand()%10)*20/10.);   //(190,320);
-    ML=new myLine[2]();
-    ML[0]=myLine(20,290,252,400,0);
-    ML[1]=myLine(250,400,400,180,0);
+        _node[i]=node(40+(rand()%70),80+(rand()%90));   //(190,320);
+    ML=new myLine[lines_N]();
+    ML[0]=myLine(50,199,60,190,0);
+    ML[1]=myLine(60,190,282,300,0);
+    ML[2]=myLine(280,300,300,280,0);
+    ML[3]=myLine(300,280,325,300,0);
+    ML[4]=myLine(324,300,410,100,0);
 }
 
 void Dialog::drawing()
@@ -46,26 +50,37 @@ void Dialog::mainCircle()
     for(int j=0;j<nodes_N;j++)
     {
         _node[j].spaceKinemat();
-        for (int i=0;i<2;i++)
+        for (int i=0;i<lines_N;i++)
             _node[j].checkStuck(ML[i]);
     }
 }
 
 void Dialog::paintEvent(QPaintEvent* e)
 {
+    static float t=1;
+    t+=.06;
+    if(t>10)t=10;
+    for (int i=0;i<t;i++)
+        mainCircle();
 
     QPainter* painter=new QPainter(this);
     painter->setRenderHint(QPainter::Antialiasing, 1);
-    QPen pen(Qt::black, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    QPen pen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     painter->setPen(pen);
-    for (int i=0;i<10;i++)
-        mainCircle();
+    painter->scale(1.5,1.5);
 
-    for(int j=0;j<2;j++)
+    for(int j=0;j<lines_N;j++)
         painter->drawLine(ML[j].x[0],ML[j].y[0],ML[j].x[1],ML[j].y[1]);
-    for(int j=0;j<nodes_N;j++)
-        painter->drawPoint(_node[j].x,_node[j].y);
 
+    pen=QPen(Qt::black, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+
+
+    for(int j=0;j<nodes_N;j++)
+    {
+        pen.setColor(QColor(_node[j].clr[0],_node[j].clr[1],_node[j].clr[2]));
+            painter->setPen(pen);
+        painter->drawPoint(_node[j].x,_node[j].y);
+    }
     delete painter;
 }
 

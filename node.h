@@ -9,6 +9,7 @@ public:
     float x, y;
     float vx, vy;
     float ax, ay;
+    float clr[3];
     node();
     node(int ,int );
     void spaceKinemat();
