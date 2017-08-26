@@ -25,9 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         dialog.cpp \
-    work.cpp
+    work.cpp \
+    myline.cpp \
+    node.cpp
 
 HEADERS  += dialog.h \
-    work.h
+    work.h \
+    myline.h \
+    node.h
 
 FORMS    +=

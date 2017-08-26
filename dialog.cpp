@@ -3,6 +3,7 @@
 #include <QTimer>
 #include <QThread>
 #include "work.h"
+#include "myline.h"
 //#include "vars.h"
 QTimer *timer;
 work* WK;
@@ -18,6 +19,8 @@ Dialog::Dialog(QWidget *parent) :
     WK->moveToThread(thread);
     connect(thread,SIGNAL(started()),WK,SLOT(doWork()));
     thread->start();
+
+
 }
 
 void Dialog::drawing()
@@ -27,8 +30,9 @@ void Dialog::drawing()
 
 void Dialog::paintEvent(QPaintEvent* e)
 {
+
     QPainter* painter=new QPainter(this);
-    painter->drawLine(250,300,500,300+WK->i*.1);
+    painter->drawLine(WK->ML.x[0],WK->ML.y[0],WK->ML.x[1],WK->ML.y[1]);
     delete painter;
 }
 
