@@ -6,11 +6,12 @@
 #include "myline.h"
 #include "node.h"
 //#include "vars.h"
+int nodes_N=140;
 float f;
 QTimer *timer;
 //work* WK;
 myLine* ML;
-node _node(190,320);
+node* _node;
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent)
 {
@@ -23,8 +24,11 @@ Dialog::Dialog(QWidget *parent) :
     //    WK->moveToThread(thread);
     //    connect(thread,SIGNAL(started()),WK,SLOT(doWork()));
     //    thread->start();
+    _node=new node[nodes_N]();
+    for (int i=0;i<nodes_N;i++)
+        _node[i]=node(190+(rand()%10)*20/10.,320+(rand()%10)*20/10.);   //(190,320);
     ML=new myLine[2]();
-    ML[0]=myLine(0,300,250,400,0);
+    ML[0]=myLine(20,290,252,400,0);
     ML[1]=myLine(250,400,400,180,0);
 }
 
@@ -39,9 +43,12 @@ void Dialog::mainCircle()
 
 
     //qDebug()<<"hello";
-    _node.spaceKinemat();
-    for (int i=0;i<2;i++)
-        _node.checkStuck(ML[i]);
+    for(int j=0;j<nodes_N;j++)
+    {
+        _node[j].spaceKinemat();
+        for (int i=0;i<2;i++)
+            _node[j].checkStuck(ML[i]);
+    }
 }
 
 void Dialog::paintEvent(QPaintEvent* e)
@@ -56,7 +63,9 @@ void Dialog::paintEvent(QPaintEvent* e)
 
     for(int j=0;j<2;j++)
         painter->drawLine(ML[j].x[0],ML[j].y[0],ML[j].x[1],ML[j].y[1]);
-    painter->drawPoint(_node.x,_node.y);
+    for(int j=0;j<nodes_N;j++)
+        painter->drawPoint(_node[j].x,_node[j].y);
+
     delete painter;
 }
 

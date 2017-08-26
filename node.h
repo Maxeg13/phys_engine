@@ -9,6 +9,7 @@ public:
     float x, y;
     float vx, vy;
     float ax, ay;
+    node();
     node(int ,int );
     void spaceKinemat();
 //    checkWall(myLine ML);

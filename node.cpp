@@ -4,8 +4,18 @@ node::node(int a, int b)
 {
     x=a;
     y=b;
+    vx=0;
+    vy=0;
+    ax=0;
+    ay=0;
 }
-
+node::node()
+{
+    vx=0;
+    vy=0;
+    ax=0;
+    ay=0;
+};
 void node::spaceKinemat()
 {
     ay=.004;
