@@ -10,7 +10,7 @@
 //#include "vars.h"
 int nodes_N=0;
 int lines_N=5;
-int edges_N=1;
+int edges_N=5;
 float f;
 edge** ed;
 QTimer *timer;
@@ -24,26 +24,38 @@ Dialog::Dialog(QWidget *parent) :
     ed=new edge*[edges_N];
     float cs=cos(1.3)*15;
     float sn=sin(1.3)*15;
-    nd=new node[6];
-    nd[0]=node(70,55);
-    nd[1]=node(85,55);
-    nd[2]=node(85+cs,55+sn);
-    nd[3]=node(85,55+2*sn);
-    nd[4]=node(70,55+2*sn);
-    nd[5]=node(70-cs,55+sn);
+    nd=new node[4];
+//    nd[0]=node(70,55);
+//    nd[1]=node(85,55);
+//    nd[2]=node(85+cs,55+sn);
+//    nd[3]=node(85,55+2*sn);
+//    nd[4]=node(70,55+2*sn);
+//    nd[5]=node(70-cs,55+sn);
 
-    ed[0]=new edge(nd,0,1);
-    ed[1]=new edge(nd,1,2);
-    ed[2]=new edge(nd,2,0);
-    //    ed[3]=new edge(nd,3,4);
-    //    ed[4]=new edge(nd,4,5);
-    //    ed[5]=new edge(nd,5,0);
-    //    ed[6]=new edge(nd,0,2);
-    //    ed[7]=new edge(nd,1,3);
-    //    ed[8]=new edge(nd,2,4);
-    //    ed[9]=new edge(nd,3,5);
-    //    ed[10]=new edge(nd,4,0);
-    //    ed[11]=new edge(nd,5,1);
+     nd[0]=node(70,55);
+     nd[1]=node(85,55);
+     nd[2]=node(85,70);
+     nd[3]=node(70,70);
+
+     ed[0]=new edge(nd,0,1);
+     ed[1]=new edge(nd,1,2);
+     ed[2]=new edge(nd,2,3);
+     ed[3]=new edge(nd,3,0);
+     ed[4]=new edge(nd,0,2);
+//     ed[5]=new edge(nd,3,1);
+
+//    ed[0]=new edge(nd,0,1);
+//    ed[1]=new edge(nd,1,2);
+//    ed[2]=new edge(nd,2,0);
+//        ed[3]=new edge(nd,3,4);
+//        ed[4]=new edge(nd,4,5);
+//        ed[5]=new edge(nd,5,0);
+//        ed[6]=new edge(nd,0,2);
+//        ed[7]=new edge(nd,1,3);
+//        ed[8]=new edge(nd,2,4);
+//        ed[9]=new edge(nd,3,5);
+//        ed[10]=new edge(nd,4,0);
+//        ed[11]=new edge(nd,5,1);
     timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(drawing()));
     timer->start(40);
@@ -92,7 +104,7 @@ void Dialog::mainCircle()
 
 void Dialog::paintEvent(QPaintEvent* e)
 {
-    static float t=15;
+    static float t=5;
     //    t+=.06;
     //    if(t>10)t=1;
     for (int i=0;i<t;i++)
