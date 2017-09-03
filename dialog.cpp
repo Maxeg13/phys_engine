@@ -6,11 +6,13 @@
 #include "myline.h"
 #include "node.h"
 #include "edge.h"
+#include <math.h>
 //#include "vars.h"
 int nodes_N=0;
 int lines_N=5;
+int edges_N=1;
 float f;
-edge* ed;
+edge** ed;
 QTimer *timer;
 //work* WK;
 myLine* ML;
@@ -19,10 +21,29 @@ node* nd;
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent)
 {
-    nd=new node[2];
+    ed=new edge*[edges_N];
+    float cs=cos(1.3)*15;
+    float sn=sin(1.3)*15;
+    nd=new node[6];
     nd[0]=node(70,55);
-    nd[1]=node(85,60);
-    ed=new edge(nd);
+    nd[1]=node(85,55);
+    nd[2]=node(85+cs,55+sn);
+    nd[3]=node(85,55+2*sn);
+    nd[4]=node(70,55+2*sn);
+    nd[5]=node(70-cs,55+sn);
+
+    ed[0]=new edge(nd,0,1);
+    ed[1]=new edge(nd,1,2);
+    ed[2]=new edge(nd,2,0);
+    //    ed[3]=new edge(nd,3,4);
+    //    ed[4]=new edge(nd,4,5);
+    //    ed[5]=new edge(nd,5,0);
+    //    ed[6]=new edge(nd,0,2);
+    //    ed[7]=new edge(nd,1,3);
+    //    ed[8]=new edge(nd,2,4);
+    //    ed[9]=new edge(nd,3,5);
+    //    ed[10]=new edge(nd,4,0);
+    //    ed[11]=new edge(nd,5,1);
     timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(drawing()));
     timer->start(40);
@@ -50,10 +71,15 @@ void Dialog::drawing()
 
 void Dialog::mainCircle()
 {
-
-ed->spaceKinemat();
-for (int i=0;i<lines_N;i++)
-    ed->checkStuck(ML[i]);
+    /////////////////////
+//    for(int k=0;k<3;k++)
+//        for (int i=0;i<edges_N;i++)
+//            ed[i]->correctLength();
+    for (int i=0;i<edges_N;i++)
+        ed[i]->spaceKinemat();
+    for (int i1=0;i1<edges_N;i1++)
+        for (int i=0;i<lines_N;i++)
+            ed[i1]->checkStuck(ML[i]);
 
     //qDebug()<<"hello";
     for(int j=0;j<nodes_N;j++)
@@ -66,9 +92,9 @@ for (int i=0;i<lines_N;i++)
 
 void Dialog::paintEvent(QPaintEvent* e)
 {
-    static float t=10;
-//    t+=.06;
-//    if(t>10)t=1;
+    static float t=15;
+    //    t+=.06;
+    //    if(t>10)t=1;
     for (int i=0;i<t;i++)
         mainCircle();
 
@@ -78,8 +104,9 @@ void Dialog::paintEvent(QPaintEvent* e)
     painter->setPen(pen);
     painter->scale(1.5,1.5);
 
-    //draw edge
-    painter->drawLine(ed->nd[0].x,ed->nd[0].y,ed->nd[1].x,ed->nd[1].y);
+    //    draw edge
+    for(int i=0;i<edges_N;i++)
+        painter->drawLine(ed[i]->getX0(),ed[i]->getY0(),ed[i]->getX1(),ed[i]->getY1());
 
     for(int j=0;j<lines_N;j++)
         painter->drawLine(ML[j].x[0],ML[j].y[0],ML[j].x[1],ML[j].y[1]);
@@ -90,7 +117,7 @@ void Dialog::paintEvent(QPaintEvent* e)
     for(int j=0;j<nodes_N;j++)
     {
         pen.setColor(QColor(_node[j].clr[0],_node[j].clr[1],_node[j].clr[2]));
-            painter->setPen(pen);
+        painter->setPen(pen);
         painter->drawPoint(_node[j].x,_node[j].y);
     }
     delete painter;

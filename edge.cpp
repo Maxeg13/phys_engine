@@ -15,11 +15,35 @@ edge::edge()
 //    getLength();
 //    length_const=length;
 //}
-edge::edge(node *_nd)
+
+int edge::getX0()
 {
+    return(nd[ind[0]].x);
+}
+
+int edge::getX1()
+{
+    return(nd[ind[1]].x);
+}
+
+int edge::getY0()
+{
+    return(nd[ind[0]].y);
+}
+
+int edge::getY1()
+{
+    return(nd[ind[1]].y);
+}
+
+edge::edge(node *_nd, int a, int b)
+{
+    ind[0]=a;
+    ind[1]=b;
     nd=_nd;
     getLength();
     length_const=length;
+
 //    qDebug()<<n[0].ax;
 //     qDebug()<<n[1].ax;
 
@@ -27,9 +51,9 @@ edge::edge(node *_nd)
 
 void edge::getLength()
 {
-    length=sqrt((nd[0].x-nd[1].x)*(nd[0].x-nd[1].x)+(nd[0].y-nd[1].y)*(nd[0].y-nd[1].y));
-    ex=(nd[0].x-nd[1].x)/length;
-    ey=(nd[0].y-nd[1].y)/length;
+    length=sqrt((nd[ind[0]].x-nd[ind[1]].x)*(nd[ind[0]].x-nd[ind[1]].x)+(nd[ind[0]].y-nd[ind[1]].y)*(nd[ind[0]].y-nd[ind[1]].y));
+    ex=(nd[ind[0]].x-nd[ind[1]].x)/length;
+    ey=(nd[ind[0]].y-nd[ind[1]].y)/length;
     ox=-ey;
     oy=ex;
 }
@@ -37,22 +61,24 @@ void edge::getLength()
 void edge::correctLength()
 {
     getLength();
-    nd[0].vx+=0.5*(length_const-length)*ex;
-    nd[0].vy+=0.5*(length_const-length)*ey;
-    nd[1].vx-=0.5*(length_const-length)*ex;
-    nd[1].vy-=0.5*(length_const-length)*ey;
+    float k=.5;
+    nd[ind[0]].vx+=k*(length_const-length)*ex;
+    nd[ind[0]].vy+=k*(length_const-length)*ey;
+    nd[ind[1]].vx-=k*(length_const-length)*ex;
+    nd[ind[1]].vy-=k*(length_const-length)*ey;
 }
 
 void edge::checkStuck(myLine& ML)
 {
-    nd[0].checkStuck(ML);
-    nd[1].checkStuck(ML);
+    nd[ind[0]].checkStuck(ML);
+    nd[ind[1]].checkStuck(ML);
 }
 
 void edge::spaceKinemat()
 {
-    nd[0].spaceKinemat();
-    nd[1].spaceKinemat();
+       correctLength();
+    nd[ind[0]].spaceKinemat();
+    nd[ind[1]].spaceKinemat();
     correctLength();
 
 }
