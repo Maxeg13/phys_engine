@@ -44,10 +44,10 @@ node::checkStuck(myLine& ML)
             //             qDebug()<<"fuck";
 //            x-=vx;
 //            y-=vy;
-                x+=-ortho*ML.ox;
-                y+=-ortho*ML.oy;
-            proj=.73*(vx*ML.ex+vy*ML.ey);
-            ortho=.73*(vx*ML.ox+vy*ML.oy);
+                x+=-(ortho)*ML.ox;
+                y+=-(ortho)*ML.oy;
+            proj=.93*(vx*ML.ex+vy*ML.ey);
+            ortho=.93*(vx*ML.ox+vy*ML.oy);
             vx=ML.ex*proj-ML.ox*ortho;
             vy=ML.ey*proj-ML.oy*ortho;
         }

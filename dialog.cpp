@@ -10,7 +10,7 @@
 //#include "vars.h"
 int nodes_N=0;
 int lines_N=5;
-int edges_N=5;
+int edges_N=6;
 float f;
 edge** ed;
 QTimer *timer;
@@ -33,7 +33,7 @@ Dialog::Dialog(QWidget *parent) :
 //    nd[5]=node(70-cs,55+sn);
 
      nd[0]=node(70,55);
-     nd[1]=node(85,55);
+     nd[1]=node(85,55);//nd[1].vy=.1;
      nd[2]=node(85,70);
      nd[3]=node(70,70);
 
@@ -42,7 +42,7 @@ Dialog::Dialog(QWidget *parent) :
      ed[2]=new edge(nd,2,3);
      ed[3]=new edge(nd,3,0);
      ed[4]=new edge(nd,0,2);
-//     ed[5]=new edge(nd,3,1);
+     ed[5]=new edge(nd,3,1);
 
 //    ed[0]=new edge(nd,0,1);
 //    ed[1]=new edge(nd,1,2);
@@ -70,8 +70,8 @@ Dialog::Dialog(QWidget *parent) :
         _node[i]=node(40+(rand()%70),80+(rand()%90));   //(190,320);
     ML=new myLine[lines_N]();
     ML[0]=myLine(50,199,60,190,0);
-    ML[1]=myLine(60,190,282,300,0);
-    ML[2]=myLine(280,300,300,280,0);
+    ML[1]=myLine(60,140,284,300,0);
+    ML[2]=myLine(277,300,300,280,0);
     ML[3]=myLine(300,280,325,300,0);
     ML[4]=myLine(324,300,410,100,0);
 }
@@ -104,7 +104,7 @@ void Dialog::mainCircle()
 
 void Dialog::paintEvent(QPaintEvent* e)
 {
-    static float t=5;
+    static float t=3;
     //    t+=.06;
     //    if(t>10)t=1;
     for (int i=0;i<t;i++)

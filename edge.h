@@ -26,6 +26,7 @@ public:
     int getY0();
     int getX1();
     int getX0();
+    void getNorm();
 };
 
 #endif // EDGE_H
