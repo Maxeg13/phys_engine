@@ -5,17 +5,24 @@
 //#include "work.h"
 #include "myline.h"
 #include "node.h"
+#include "edge.h"
 //#include "vars.h"
-int nodes_N=340;
+int nodes_N=0;
 int lines_N=5;
 float f;
+edge* ed;
 QTimer *timer;
 //work* WK;
 myLine* ML;
 node* _node;
+node* nd;
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent)
 {
+    nd=new node[2];
+    nd[0]=node(70,55);
+    nd[1]=node(85,60);
+    ed=new edge(nd);
     timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(drawing()));
     timer->start(40);
@@ -44,7 +51,9 @@ void Dialog::drawing()
 void Dialog::mainCircle()
 {
 
-
+ed->spaceKinemat();
+for (int i=0;i<lines_N;i++)
+    ed->checkStuck(ML[i]);
 
     //qDebug()<<"hello";
     for(int j=0;j<nodes_N;j++)
@@ -57,9 +66,9 @@ void Dialog::mainCircle()
 
 void Dialog::paintEvent(QPaintEvent* e)
 {
-    static float t=1;
-    t+=.06;
-    if(t>10)t=10;
+    static float t=10;
+//    t+=.06;
+//    if(t>10)t=1;
     for (int i=0;i<t;i++)
         mainCircle();
 
@@ -68,6 +77,9 @@ void Dialog::paintEvent(QPaintEvent* e)
     QPen pen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     painter->setPen(pen);
     painter->scale(1.5,1.5);
+
+    //draw edge
+    painter->drawLine(ed->nd[0].x,ed->nd[0].y,ed->nd[1].x,ed->nd[1].y);
 
     for(int j=0;j<lines_N;j++)
         painter->drawLine(ML[j].x[0],ML[j].y[0],ML[j].x[1],ML[j].y[1]);

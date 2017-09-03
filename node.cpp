@@ -17,7 +17,7 @@ node::node()
     vy=0;
     ax=0;
     ay=0;
-};
+}
 void node::spaceKinemat()
 {
     ay=.004;
@@ -42,10 +42,12 @@ node::checkStuck(myLine& ML)
             if(fabs(ortho)<6)
         {
             //             qDebug()<<"fuck";
-            x-=vx;
-            y-=vy;
-            proj=0.999*(vx*ML.ex+vy*ML.ey);
-            ortho=0.999*(vx*ML.ox+vy*ML.oy);
+//            x-=vx;
+//            y-=vy;
+                x+=-ortho*ML.ox;
+                y+=-ortho*ML.oy;
+            proj=.73*(vx*ML.ex+vy*ML.ey);
+            ortho=.73*(vx*ML.ox+vy*ML.oy);
             vx=ML.ex*proj-ML.ox*ortho;
             vy=ML.ey*proj-ML.oy*ortho;
         }

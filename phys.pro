@@ -27,11 +27,13 @@ SOURCES += main.cpp\
         dialog.cpp \
     work.cpp \
     myline.cpp \
-    node.cpp
+    node.cpp \
+    edge.cpp
 
 HEADERS  += dialog.h \
     work.h \
     myline.h \
-    node.h
+    node.h \
+    edge.h
 
 FORMS    +=

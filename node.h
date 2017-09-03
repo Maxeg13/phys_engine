@@ -5,7 +5,7 @@
 class node
 {
 public:
-    float frict=0.9;
+    float frict=1;
     float x, y;
     float vx, vy;
     float ax, ay;
