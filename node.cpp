@@ -1,13 +1,16 @@
 #include "node.h"
+#include "physobject.h"
 #include <QDebug>
-node::node(int a, int b)
+node::node(PhysObject* _PO,int a, int b)
 {
+    PO=_PO;
     x=a;
     y=b;
     vx=0;
     vy=0;
     ax=0;
     ay=0;
+    crash=0;
     for(int i=0;i<3;i++)
         clr[i]=rand()%10*25;
 }
@@ -20,7 +23,7 @@ node::node()
 }
 void node::spaceKinemat()
 {
-    ay=.004;
+    ay=.0042;
     vx+=ax;
     vy+=ay;
     x+=vx*frict;
@@ -39,17 +42,24 @@ node::checkStuck(myLine& ML)
     {
         if((!ML.orient)&&(ortho>0)||(ML.orient)&&(ortho<0))
             // time to bounce
-            if(fabs(ortho)<6)
+            if(fabs(ortho)<10)
         {
             //             qDebug()<<"fuck";
 //            x-=vx;
 //            y-=vy;
-                x+=-(ortho)*ML.ox;
-                y+=-(ortho)*ML.oy;
-            proj=.93*(vx*ML.ex+vy*ML.ey);
-            ortho=.93*(vx*ML.ox+vy*ML.oy);
-            vx=ML.ex*proj-ML.ox*ortho;
-            vy=ML.ey*proj-ML.oy*ortho;
+//                x+=-(ortho)*ML.ox;
+//                y+=-(ortho)*ML.oy;
+                PO->shift_x-=(ortho)*ML.ox;
+                PO->shift_y-= (ortho)*ML.oy;
+            proj=.98*(vx*ML.ex+vy*ML.ey);
+            ortho=.3*(vx*ML.ox+vy*ML.oy);
+            PO->shift_vx=ML.ex*proj-ML.ox*ortho;
+            PO->shift_vy=ML.ey*proj-ML.oy*ortho;
+
+            vx=PO->shift_vx;
+            vy=PO->shift_vy;
+
+//            crash=1;
         }
     }
     //    else

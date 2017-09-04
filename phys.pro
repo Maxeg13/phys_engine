@@ -25,15 +25,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         dialog.cpp \
-    work.cpp \
     myline.cpp \
     node.cpp \
-    edge.cpp
+    edge.cpp \
+    physobject.cpp
 
 HEADERS  += dialog.h \
-    work.h \
     myline.h \
     node.h \
-    edge.h
+    edge.h \
+    physobject.h
 
 FORMS    +=

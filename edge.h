@@ -5,9 +5,11 @@
 class edge
 {
 public:
+
     edge();
     edge(int a,int b,int c,int d);
     int ind[2];
+    static int size;
     float length;
     float length_const;
     float ex;
