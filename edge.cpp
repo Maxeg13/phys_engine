@@ -76,33 +76,33 @@ void edge::correctLength()
     nd[ind[1]].y-=k*(length_const-length)*ey;
 }
 
-void edge::checkStuck(myLine& ML)
-{
-    for(int i=0;i<2;i++)
-    {
-        nd[ind[i]].checkStuck(ML);
+//void edge::checkStuck(myLine& ML)
+//{
+//    for(int i=0;i<2;i++)
+//    {
+//        nd[ind[i]].checkStuck(ML);
 
-//        if(nd[ind[i]].crash)
-//        {
-//            crash=1;
-//            nd[ind[i]].crash=0;
-//            shift_x+=nd[ind[i]].shift_x;
-//            shift_y+=nd[ind[i]].shift_y;
-//        }
-    }
+////        if(nd[ind[i]].crash)
+////        {
+////            crash=1;
+////            nd[ind[i]].crash=0;
+////            shift_x+=nd[ind[i]].shift_x;
+////            shift_y+=nd[ind[i]].shift_y;
+////        }
+//    }
+//}
+
+void edge::preSpaceKinemat()
+{
+
+    ov0=nd[ind[0]].vx*ox+nd[ind[0]].vy*oy;
+    ov1=nd[ind[1]].vx*ox+nd[ind[1]].vy*oy;
+    ovd=(ov1-ov0)/2;
 }
 
 void edge::spaceKinemat()
 {
-    //    for (int i=0;i<2;i++)
-    //    {
 
-    float ov0=nd[ind[0]].vx*ox+nd[ind[0]].vy*oy;
-    float ov1=nd[ind[1]].vx*ox+nd[ind[1]].vy*oy;
-    float ovd=(ov1-ov0)/2;
-    //       correctLength();
-    nd[ind[0]].spaceKinemat();
-    nd[ind[1]].spaceKinemat();
     getNorm();
 
     ov0=nd[ind[0]].vx*ox+nd[ind[0]].vy*oy;

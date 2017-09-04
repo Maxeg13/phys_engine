@@ -40,7 +40,7 @@ node::checkStuck(myLine& ML)
 
     if((proj>0)&&(proj<ML.length))
     {
-        if((!ML.orient)&&(ortho>0)||(ML.orient)&&(ortho<0))
+        if((!ML.orient)&&(ortho>-2)||(ML.orient)&&(ortho<4))
             // time to bounce
             if(fabs(ortho)<10)
         {
@@ -49,15 +49,15 @@ node::checkStuck(myLine& ML)
 //            y-=vy;
 //                x+=-(ortho)*ML.ox;
 //                y+=-(ortho)*ML.oy;
-                PO->shift_x-=(ortho)*ML.ox;
-                PO->shift_y-= (ortho)*ML.oy;
-            proj=.98*(vx*ML.ex+vy*ML.ey);
-            ortho=.3*(vx*ML.ox+vy*ML.oy);
+                PO->shift_x-=(ortho+2)*ML.ox;
+                PO->shift_y-= (ortho+2)*ML.oy;
+            proj=.5*(vx*ML.ex+vy*ML.ey);
+            ortho=.5*(vx*ML.ox+vy*ML.oy);
             PO->shift_vx=ML.ex*proj-ML.ox*ortho;
             PO->shift_vy=ML.ey*proj-ML.oy*ortho;
 
-            vx=PO->shift_vx;
-            vy=PO->shift_vy;
+//            vx=sqrt(PO->shift_vx*PO->shift_vx/2+1);
+//            vy=sqrt(PO->shift_vy*PO->shift_vy/2+1);
 
 //            crash=1;
         }

@@ -12,13 +12,16 @@ public:
     static int size;
     float length;
     float length_const;
+    float ov0;
+    float ov1;
+    float ovd;
     float ex;
     float ey;
     float ox;
     float oy;
     node* nd;
     void getLength();
-    void checkStuck();
+//    void checkStuck();
     void spaceKinemat();
 
     void correctLength();
@@ -29,6 +32,7 @@ public:
     int getX1();
     int getX0();
     void getNorm();
+    void preSpaceKinemat();
 };
 
 #endif // EDGE_H
