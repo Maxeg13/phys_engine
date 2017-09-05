@@ -7,6 +7,7 @@ class PhysObject
 public:
     PhysObject();
     edge** ed;
+    bool crashed;
     float shift_x,shift_vx;
     float shift_y,shift_vy;
     int size;

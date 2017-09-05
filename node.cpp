@@ -41,24 +41,33 @@ void node::checkStuck(myLine& ML)
         if((!ML.orient)&&(ortho>-2)||(ML.orient)&&(ortho<4))
             // time to bounce
             if(fabs(ortho)<10)
-        {
-            //             qDebug()<<"fuck";
-//            x-=vx;
-//            y-=vy;
-//                x+=-(ortho)*ML.ox;
-//                y+=-(ortho)*ML.oy;
-                PO->shift_x-=(ortho+2)*ML.ox;
-                PO->shift_y-= (ortho+2)*ML.oy;
-            proj=.5*(vx*ML.ex+vy*ML.ey);
-            ortho=.5*(vx*ML.ox+vy*ML.oy);
-            PO->shift_vx=ML.ex*proj-ML.ox*ortho;
-            PO->shift_vy=ML.ey*proj-ML.oy*ortho;
+            {
+                PO->crashed=1;
+                //             qDebug()<<"fuck";
+                //            x-=vx;
+                //            y-=vy;
+                //                x+=-(ortho)*ML.ox;
+                //                y+=-(ortho)*ML.oy;
+                PO->shift_x=-(ortho+2)*ML.ox;
+                PO->shift_y=- (ortho+2)*ML.oy;
+                proj=2*(vx*ML.ex+vy*ML.ey);
+                ortho=2*(vx*ML.ox+vy*ML.oy);
+                PO->shift_vx=ML.ex*proj-ML.ox*ortho;
+                PO->shift_vy=ML.ey*proj-ML.oy*ortho;
 
-            vx=((PO->shift_vx>0)?1:(-1))*(sqrt(PO->shift_vx*PO->shift_vx/9+1)-1)*3;
-            vy=((PO->shift_vy>0)?1:(-1))*(sqrt(PO->shift_vy*PO->shift_vy/9+1)-1)*3;
+                vx=((PO->shift_vx>0)?1:(-1))*(sqrt(PO->shift_vx*PO->shift_vx+4)-2);
+                vy=((PO->shift_vy>0)?1:(-1))*(sqrt(PO->shift_vy*PO->shift_vy+4)-2);
 
-//            crash=1;
-        }
+                for(int i=0;i<PO->nodes_N;i++)
+                {
+                    if((PO->ed[0]->nd+i)!=this)
+                    {
+                        PO->ed[0]->nd[i].x+=PO->shift_x;
+                        PO->ed[0]->nd[i].y+=PO->shift_y;
+                    }
+                }
+                //            crash=1;
+            }
     }
     //    else
     //        qDebug()<<"not_fuck";

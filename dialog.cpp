@@ -12,7 +12,7 @@
 //#include "vars.h"
 int nodes_N=0;
 int lines_N=5;
-int edges_N=3;
+int edges_N=5;
 float f;
 edge** ed;
 QTimer *timer;
@@ -32,9 +32,9 @@ Dialog::Dialog(QWidget *parent) :
     ML[4]=myLine(324,300,410,100,0);
 
     ed=new edge*[edges_N];
-    PO=new PhysObject(ed,edges_N,3);//
+    PO=new PhysObject(ed,edges_N,4);//
     PO->shift_y=50;
-    PO->shift_x=80;
+    PO->shift_x=180;
 //  edge::size=nodes_N;
     float cs=cos(1.3)*15;
     float sn=sin(1.3)*15;
@@ -47,10 +47,10 @@ Dialog::Dialog(QWidget *parent) :
     //    nd[4]=node(70,55+2*sn);
     //    nd[5]=node(70-cs,55+sn);
 
-    nd[0]=node(PO,70,55);
-    nd[1]=node(PO,100,55);//nd[1].vy=.1;
-    nd[2]=node(PO,100,85);
-    nd[3]=node(PO,70,85);
+    nd[0]=node(PO,170,55);
+    nd[1]=node(PO,200,55);//nd[1].vy=.1;
+    nd[2]=node(PO,200,85);
+    nd[3]=node(PO,170,85);
 
     ed[0]=new edge(nd,0,1);
     ed[1]=new edge(nd,1,2);
