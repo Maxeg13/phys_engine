@@ -38,7 +38,7 @@ Dialog::Dialog(QWidget *parent) :
 //  edge::size=nodes_N;
     float cs=cos(1.3)*15;
     float sn=sin(1.3)*15;
-    nd=new node[3];
+    nd=new node[4];
 
     //    nd[0]=node(70,55);
     //    nd[1]=node(85,55);
@@ -105,7 +105,7 @@ void Dialog::mainCircle()
 
     for(int j=0;j<nodes_N;j++)
     {
-        _node[j].spaceKinemat();
+        _node[j].spaceKinemat(0,0);
         for (int i=0;i<lines_N;i++)
             _node[j].checkStuck(ML[i]);
     }

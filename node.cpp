@@ -8,8 +8,7 @@ node::node(PhysObject* _PO,int a, int b)
     y=b;
     vx=0;
     vy=0;
-    ax=0;
-    ay=0;
+
     crash=0;
     for(int i=0;i<3;i++)
         clr[i]=rand()%10*25;
@@ -18,18 +17,17 @@ node::node()
 {
     vx=0;
     vy=0;
-    ax=0;
-    ay=0;
+
 }
-void node::spaceKinemat()
+void node::spaceKinemat(float ax,float ay)
 {
-    ay=.0042;
+
     vx+=ax;
-    vy+=ay;
+    vy+=ay+0.0048;
     x+=vx*frict;
     y+=vy*frict;
 }
-node::checkStuck(myLine& ML)
+void node::checkStuck(myLine& ML)
 {
     float xh=x-ML.x[0];
     float yh=y-ML.y[0];
@@ -56,8 +54,8 @@ node::checkStuck(myLine& ML)
             PO->shift_vx=ML.ex*proj-ML.ox*ortho;
             PO->shift_vy=ML.ey*proj-ML.oy*ortho;
 
-//            vx=sqrt(PO->shift_vx*PO->shift_vx/2+1);
-//            vy=sqrt(PO->shift_vy*PO->shift_vy/2+1);
+            vx=((PO->shift_vx>0)?1:(-1))*(sqrt(PO->shift_vx*PO->shift_vx/9+1)-1)*3;
+            vy=((PO->shift_vy>0)?1:(-1))*(sqrt(PO->shift_vy*PO->shift_vy/9+1)-1)*3;
 
 //            crash=1;
         }

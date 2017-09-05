@@ -10,14 +10,14 @@ public:
     float frict=1;
     float x, y;
     float vx, vy;
-    float ax, ay;
+//    float ax, ay;
     float clr[3];
     bool crash;
     node();
     node(PhysObject*,int ,int );
-    void spaceKinemat();
+    void spaceKinemat(float ,float);
 //    checkWall(myLine ML);
-    checkStuck(myLine &ML);
+    void checkStuck(myLine &ML);
 };
 
 #endif // NODE_H
