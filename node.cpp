@@ -37,13 +37,13 @@ node::checkStuck(myLine& ML)
 
     if((proj>0)&&(proj<ML.length))
     {
-        if((!ML.orient)&&(ortho>0)||(ML.orient)&&(ortho<0))
+        if((!ML.orient)&&(ortho>-2)||(ML.orient)&&(ortho<0))
             // time to bounce
-            if(fabs(ortho)<6)
+            if(fabs(ortho+2)<8)
         {
             //             qDebug()<<"fuck";
-            x-=vx;
-            y-=vy;
+            x-=ML.ox*(ortho+2);
+            y-=ML.oy*(ortho+2);
             proj=0.999*(vx*ML.ex+vy*ML.ey);
             ortho=0.999*(vx*ML.ox+vy*ML.oy);
             vx=ML.ex*proj-ML.ox*ortho;
