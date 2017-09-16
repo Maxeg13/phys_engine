@@ -9,7 +9,7 @@ node::node(PhysObject* _PO,int a, int b)
     y=b;
     vx=0;
     vy=0;
-//size=5;
+    //size=5;
     crash=0;
     for(int i=0;i<3;i++)
         clr[i]=rand()%10*25;
@@ -25,13 +25,22 @@ void node::setV(float ax,float ay)
     static float h1, h2;
     h1=vx+ax;
     h2=vy+ay+0.0024*!crashed;
-//    if((h1*h1+h2*h2)<.9)
+    //    if((h1*h1+h2*h2)<.9)
     {
-    vx+=ax;
-    vy+=ay+0.0024*!crashed;
+        vx+=ax;
+        vy+=ay+0.0024*!crashed;
         crashed=0;
     }
 
+}
+
+void node::getOrtho()
+{
+    float r=sqrt(ex*ex+ey*ey);
+    ex/=r;
+    ey/=r;
+    ox=-ey;
+    oy=ex;
 }
 
 void node::setX()
@@ -40,11 +49,8 @@ void node::setX()
     y+=vy;
     ex=x-PO->x;
     ey=y-PO->y;
-    float r=sqrt(ex*ex+ey*ey);
-    ex/=r;
-    ey/=r;
-    ox=-ey;
-    oy=ex;
+
+
 }
 
 void node::spaceKinemat(float ax,float ay)
@@ -76,11 +82,11 @@ void node::checkStuck(ambientLine& ML)
                 PO->shift_x=-(ortho+2)*ML.ox;
                 PO->shift_y=- (ortho+2)*ML.oy;
 
-                proj=0.7*(vx*ML.ex+vy*ML.ey);
-                ortho=7*(vx*ML.ox+vy*ML.oy);
+                proj=0.4*(vx*ML.ex+vy*ML.ey);
+                ortho=3*(vx*ML.ox+vy*ML.oy);
                 static float korrect=0;
                 static float sqrt_korrect=sqrt(korrect);
-//                ortho=((ortho>0)?1:(-1))*(sqrt(ortho*ortho+korrect)-sqrt(korrect));
+                //                ortho=((ortho>0)?1:(-1))*(sqrt(ortho*ortho+korrect)-sqrt(korrect));
                 PO->shift_vx=ML.ex*proj-ML.ox*ortho;
                 PO->shift_vy=ML.ey*proj-ML.oy*ortho;
 

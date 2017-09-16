@@ -79,7 +79,7 @@ Dialog::Dialog(QWidget *parent) :
     //        ed[10]=new edge(nd,4,0);
     //        ed[11]=new edge(nd,5,1);
 //        PO->shift(-80,0);
-    PO->shift(200,-100);
+    PO->shift(320,0);
 
 
     timer=new QTimer(this);
@@ -105,7 +105,6 @@ void Dialog::mainCircle()
 
 
     PO->spaceKinemat();
-     PO->correctV();
 
     for (int i=0;i<lines_N;i++)
         PO->checkStuck(ML[i]);

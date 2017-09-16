@@ -48,14 +48,16 @@ void PhysObject::getV()
 
 void PhysObject::correctV()
 {
+
     getV();
     float v=sqrt(vx*vx+vy*vy);
-//    if((v)>0.01)
+    //    if((v)>0.01)
     {
 
 
         for(int i=0;i<nodes_N;i++)
         {
+            ed[0]->nd[i].getOrtho();
             float ov, ev, nev, nov;
             ov=ed[0]->nd[i].ox*vx+ed[0]->nd[i].oy*vy;
             ev=ed[0]->nd[i].ex*vx+ed[0]->nd[i].ey*vy;
@@ -64,18 +66,18 @@ void PhysObject::correctV()
 
             ed[0]->nd[i].vx=ed[0]->nd[i].ox*(nov)+ed[0]->nd[i].ex*(ev);
             ed[0]->nd[i].vy=ed[0]->nd[i].oy*nov+ed[0]->nd[i].ey*(ev);
-//            ex=vx/v;
-//            ey=vy/v;
-//            ox=-ey;
-//            oy=ex;
+            //            ex=vx/v;
+            //            ey=vy/v;
+            //            ox=-ey;
+            //            oy=ex;
 
-//            float ov,ev;
-//            ov=ed[0]->nd[i].vx*ox+ed[0]->nd[i].vy*oy;
-//            ev=ed[0]->nd[i].vx*ex+ed[0]->nd[i].vy*ey;
+            //            float ov,ev;
+            //            ov=ed[0]->nd[i].vx*ox+ed[0]->nd[i].vy*oy;
+            //            ev=ed[0]->nd[i].vx*ex+ed[0]->nd[i].vy*ey;
 
-//            ev-=0.03*(ev-v);
-//            ed[0]->nd[i].vx=ex*ev+ox*ov;
-//            ed[0]->nd[i].vy=ey*ev+oy*ov;
+            //            ev-=0.03*(ev-v);
+            //            ed[0]->nd[i].vx=ex*ev+ox*ov;
+            //            ed[0]->nd[i].vy=ey*ev+oy*ov;
 
         }
     }
@@ -101,6 +103,12 @@ void PhysObject::spaceKinemat()
     {
         for(int i=0;i<edges_N;i++)
             ed[i]->setV();
+
+        int cnt_lim=3000;
+        static int cnt=0;
+        cnt++;
+        if((cnt%(cnt_lim))==0)
+            correctV();
 
         for(int i=0;i<edges_N;i++)
             ed[i]->correctLength();

@@ -23,6 +23,7 @@ public:
     void checkStuck(ambientLine &ML);
     void setV(float ax, float ay);
     void setX();
+    void getOrtho();
 };
 
 #endif // NODE_H
