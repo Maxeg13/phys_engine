@@ -11,6 +11,7 @@ public:
     static int size;
     float frict=1;
     float x, y;
+    float ex, ey, ox, oy;
     float vx, vy;
 //    float ax, ay;
     float clr[3];

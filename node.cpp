@@ -22,15 +22,29 @@ node::node()
 
 void node::setV(float ax,float ay)
 {
+    static float h1, h2;
+    h1=vx+ax;
+    h2=vy+ay+0.0024*!crashed;
+//    if((h1*h1+h2*h2)<.9)
+    {
     vx+=ax;
     vy+=ay+0.0024*!crashed;
-    crashed=0;
+        crashed=0;
+    }
+
 }
 
 void node::setX()
 {
     x+=vx;
     y+=vy;
+    ex=x-PO->x;
+    ey=y-PO->y;
+    float r=sqrt(ex*ex+ey*ey);
+    ex/=r;
+    ey/=r;
+    ox=-ey;
+    oy=ex;
 }
 
 void node::spaceKinemat(float ax,float ay)
@@ -39,6 +53,7 @@ void node::spaceKinemat(float ax,float ay)
 
     x+=vx*frict;
     y+=vy*frict;
+
 }
 void node::checkStuck(ambientLine& ML)
 {
@@ -61,9 +76,9 @@ void node::checkStuck(ambientLine& ML)
                 PO->shift_x=-(ortho+2)*ML.ox;
                 PO->shift_y=- (ortho+2)*ML.oy;
 
-                proj=0.3*(vx*ML.ex+vy*ML.ey);
-                ortho=0.8*(vx*ML.ox+vy*ML.oy);
-                static float korrect=200;
+                proj=0.7*(vx*ML.ex+vy*ML.ey);
+                ortho=7*(vx*ML.ox+vy*ML.oy);
+                static float korrect=0;
                 static float sqrt_korrect=sqrt(korrect);
 //                ortho=((ortho>0)?1:(-1))*(sqrt(ortho*ortho+korrect)-sqrt(korrect));
                 PO->shift_vx=ML.ex*proj-ML.ox*ortho;
@@ -81,6 +96,7 @@ void node::checkStuck(ambientLine& ML)
                         PO->ed[0]->nd[i].y+=PO->shift_y;
                     }
                 }
+
                 //            crash=1;
             }
     }
