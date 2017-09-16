@@ -6,7 +6,9 @@ class PhysObject;
 class node
 {
 public:
+    bool crashed;
     PhysObject* PO;
+    static int size;
     float frict=1;
     float x, y;
     float vx, vy;
@@ -18,6 +20,8 @@ public:
     void spaceKinemat(float ,float);
 //    checkWall(ambientLine ML);
     void checkStuck(ambientLine &ML);
+    void setV(float ax, float ay);
+    void setX();
 };
 
 #endif // NODE_H

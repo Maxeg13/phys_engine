@@ -8,6 +8,7 @@ public:
 
     edge();
     edge(int a,int b,int c,int d);
+    bool crashed;
     int ind[2];
     static int size;
     float length;
@@ -31,8 +32,9 @@ public:
     int getY0();
     int getX1();
     int getX0();
-    void getNorm();
+    void getOrths();
     void preSpaceKinemat();
+    void setV();
 };
 
 #endif // EDGE_H

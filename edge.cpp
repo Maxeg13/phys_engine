@@ -38,6 +38,7 @@ int edge::getY1()
 
 edge::edge(node *_nd, int a, int b)
 {
+
     ind[0]=a;
     ind[1]=b;
     nd=_nd;
@@ -49,7 +50,7 @@ edge::edge(node *_nd, int a, int b)
 
 }
 
-void edge::getNorm()
+void edge::getOrths()
 {
     ex=(nd[ind[0]].x-nd[ind[1]].x)/length;
     ey=(nd[ind[0]].y-nd[ind[1]].y)/length;
@@ -59,7 +60,8 @@ void edge::getNorm()
 
 void edge::getLength()
 {
-    length=sqrt((nd[ind[0]].x-nd[ind[1]].x)*(nd[ind[0]].x-nd[ind[1]].x)+(nd[ind[0]].y-nd[ind[1]].y)*(nd[ind[0]].y-nd[ind[1]].y));
+    length=sqrt((nd[ind[0]].x-nd[ind[1]].x)*(nd[ind[0]].x-nd[ind[1]].x)+
+            (nd[ind[0]].y-nd[ind[1]].y)*(nd[ind[0]].y-nd[ind[1]].y));
     ex=(nd[ind[0]].x-nd[ind[1]].x)/length;
     ey=(nd[ind[0]].y-nd[ind[1]].y)/length;
     ox=-ey;
@@ -76,21 +78,28 @@ void edge::correctLength()
     nd[ind[1]].y-=k*(length_const-length)*ey;
 }
 
-//void edge::checkStuck(myLine& ML)
-//{
-//    for(int i=0;i<2;i++)
-//    {
-//        nd[ind[i]].checkStuck(ML);
+void edge::setV()
+{
+    getOrths();
 
-////        if(nd[ind[i]].crash)
-////        {
-////            crash=1;
-////            nd[ind[i]].crash=0;
-////            shift_x+=nd[ind[i]].shift_x;
-////            shift_y+=nd[ind[i]].shift_y;
-////        }
-//    }
-//}
+    ov0=nd[ind[0]].vx*ox+nd[ind[0]].vy*oy;
+    ov1=nd[ind[1]].vx*ox+nd[ind[1]].vy*oy;
+
+    float ev0=nd[ind[0]].vx*ex+nd[ind[0]].vy*ey;
+    float ev1=nd[ind[1]].vx*ex+nd[ind[1]].vy*ey;
+
+    float  evd=.5*(ev0-ev1);
+
+    nd[ind[0]].vx=(ev0-evd)*ex+(ov0)*ox;
+    nd[ind[0]].vy=(ev0-evd)*ey+(ov0)*oy;
+    nd[ind[1]].vx=(ev1+evd)*ex+(ov1)*ox;
+    nd[ind[1]].vy=(ev1+evd)*ey+(ov1)*oy;
+
+    correctLength();
+
+}
+
+
 
 void edge::preSpaceKinemat()
 {
@@ -103,7 +112,7 @@ void edge::preSpaceKinemat()
 void edge::spaceKinemat()
 {
 
-    getNorm();
+    getOrths();
 
     ov0=nd[ind[0]].vx*ox+nd[ind[0]].vy*oy;
     ov1=nd[ind[1]].vx*ox+nd[ind[1]].vy*oy;

@@ -3,12 +3,13 @@
 #include <QDebug>
 node::node(PhysObject* _PO,int a, int b)
 {
+    crashed=0;
     PO=_PO;
     x=a;
     y=b;
     vx=0;
     vy=0;
-
+//size=5;
     crash=0;
     for(int i=0;i<3;i++)
         clr[i]=rand()%10*25;
@@ -17,13 +18,25 @@ node::node()
 {
     vx=0;
     vy=0;
-
 }
+
+void node::setV(float ax,float ay)
+{
+    vx+=ax*crashed;
+    vy+=ay*crashed+0.0048;
+    crashed=0;
+}
+
+void node::setX()
+{
+    x+=vx;
+    y+=vy;
+}
+
 void node::spaceKinemat(float ax,float ay)
 {
+    setV(ax,ay);
 
-    vx+=ax;
-    vy+=ay+0.0048;
     x+=vx*frict;
     y+=vy*frict;
 }
@@ -38,25 +51,29 @@ void node::checkStuck(ambientLine& ML)
 
     if((proj>0)&&(proj<ML.length))
     {
-        if((!ML.orient)&&(ortho>-2)||(ML.orient)&&(ortho<4))
+        int layer_width=10;
+        if((!ML.orient)&&(ortho>-2)||(ML.orient)&&(ortho<2))// 2 is for point
             // time to bounce
-            if(fabs(ortho)<10)
+            if(fabs(ortho)<layer_width)
             {
+                crashed=1;
                 PO->crashed=1;
-                //             qDebug()<<"fuck";
-                //            x-=vx;
-                //            y-=vy;
-                //                x+=-(ortho)*ML.ox;
-                //                y+=-(ortho)*ML.oy;
                 PO->shift_x=-(ortho+2)*ML.ox;
                 PO->shift_y=- (ortho+2)*ML.oy;
-                proj=2*(vx*ML.ex+vy*ML.ey);
-                ortho=2*(vx*ML.ox+vy*ML.oy);
+
+                proj=0.8*(vx*ML.ex+vy*ML.ey);
+                ortho=0.8*(vx*ML.ox+vy*ML.oy);
+                float korrect=20;
+//                ortho=((ortho>0)?1:(-1))*(sqrt(ortho*ortho+korrect)-sqrt(korrect));
                 PO->shift_vx=ML.ex*proj-ML.ox*ortho;
                 PO->shift_vy=ML.ey*proj-ML.oy*ortho;
 
-                vx=((PO->shift_vx>0)?1:(-1))*(sqrt(PO->shift_vx*PO->shift_vx+4)-2);
-                vy=((PO->shift_vy>0)?1:(-1))*(sqrt(PO->shift_vy*PO->shift_vy+4)-2);
+
+//            qDebug()<<"crash "<<hhh;
+                vx=((PO->shift_vx>0)?1:(-1))*(sqrt(PO->shift_vx*PO->shift_vx+korrect)-sqrt(korrect));
+                vy=((PO->shift_vy>0)?1:(-1))*(sqrt(PO->shift_vy*PO->shift_vy+korrect)-sqrt(korrect));
+//                vx=PO->shift_vx;
+//                vy=PO->shift_vy;
 
                 for(int i=0;i<PO->nodes_N;i++)
                 {
@@ -70,5 +87,5 @@ void node::checkStuck(ambientLine& ML)
             }
     }
     //    else
-    //        qDebug()<<"not_fuck";
+
 }
