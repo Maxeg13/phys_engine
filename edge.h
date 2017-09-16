@@ -25,7 +25,7 @@ public:
     void spaceKinemat();
 
     void correctLength();
-    void checkStuck(myLine &ML);
+    void checkStuck(ambientLine &ML);
     edge(node *_nd, int, int);
     int getY1();
     int getY0();

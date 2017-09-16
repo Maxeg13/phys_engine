@@ -1,11 +1,11 @@
-#include "myline.h"
+#include "ambientLine.h"
 #include <math.h>
 #include <QDebug>
-myLine::myLine()
+ambientLine::ambientLine()
 {
 
 };
-myLine::myLine(int a,int b,int c,int d,bool _orient)
+ambientLine::ambientLine(int a,int b,int c,int d,bool _orient)
 {
 x[0]=a;
 y[0]=b;

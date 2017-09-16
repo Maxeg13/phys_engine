@@ -1,6 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
-#include "myline.h"
+#include "ambientLine.h"
 class PhysObject;
 
 class node
@@ -16,8 +16,8 @@ public:
     node();
     node(PhysObject*,int ,int );
     void spaceKinemat(float ,float);
-//    checkWall(myLine ML);
-    void checkStuck(myLine &ML);
+//    checkWall(ambientLine ML);
+    void checkStuck(ambientLine &ML);
 };
 
 #endif // NODE_H

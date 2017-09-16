@@ -42,7 +42,7 @@ void PhysObject::spaceKinemat()
     //        ed[i]->correctLength();
 }
 
-void PhysObject::checkStuck(myLine& ML)
+void PhysObject::checkStuck(ambientLine& ML)
 {
     for (int i=0;i<nodes_N;i++)
     {

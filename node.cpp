@@ -27,7 +27,7 @@ void node::spaceKinemat(float ax,float ay)
     x+=vx*frict;
     y+=vy*frict;
 }
-void node::checkStuck(myLine& ML)
+void node::checkStuck(ambientLine& ML)
 {
     float xh=x-ML.x[0];
     float yh=y-ML.y[0];

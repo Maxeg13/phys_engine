@@ -3,7 +3,7 @@
 #include <QTimer>
 #include <QThread>
 //#include "work.h"
-#include "myline.h"
+#include "ambientLine.h"
 #include "node.h"
 #include "edge.h"
 #include <math.h>
@@ -12,24 +12,24 @@
 //#include "vars.h"
 int nodes_N=0;
 int lines_N=5;
-int edges_N=5;
+int edges_N=1;
 float f;
 edge** ed;
 QTimer *timer;
 //work* WK;
 PhysObject* PO;
-myLine* ML;
+ambientLine* ML;
 node* _node;
 node* nd;
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent)
 {
-    ML=new myLine[lines_N]();
-    ML[0]=myLine(50,199,60,190,0);
-    ML[1]=myLine(60,190,120,300,0);
-    ML[2]=myLine(120,300,300,280,0);
-    ML[3]=myLine(300,280,325,300,0);
-    ML[4]=myLine(324,300,410,100,0);
+    ML=new ambientLine[lines_N]();
+    ML[0]=ambientLine(50,199,60,190,0);
+    ML[1]=ambientLine(60,190,120,300,0);
+    ML[2]=ambientLine(120,300,300,280,0);
+    ML[3]=ambientLine(300,280,325,300,0);
+    ML[4]=ambientLine(324,300,410,100,0);
 
     ed=new edge*[edges_N];
     PO=new PhysObject(ed,edges_N,4);//

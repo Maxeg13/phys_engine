@@ -14,7 +14,7 @@ public:
     int nodes_N;
     PhysObject(edge **ed, int n1, int n2);
     void spaceKinemat();
-    void checkStuck(myLine &ML);
+    void checkStuck(ambientLine &ML);
 };
 
 #endif // PHYSOBJECT_H
