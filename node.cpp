@@ -22,8 +22,8 @@ node::node()
 
 void node::setV(float ax,float ay)
 {
-    vx+=ax*crashed;
-    vy+=ay*crashed+0.0048;
+    vx+=ax;
+    vy+=ay+0.0024*!crashed;
     crashed=0;
 }
 
@@ -51,7 +51,7 @@ void node::checkStuck(ambientLine& ML)
 
     if((proj>0)&&(proj<ML.length))
     {
-        int layer_width=10;
+        int layer_width=20;
         if((!ML.orient)&&(ortho>-2)||(ML.orient)&&(ortho<2))// 2 is for point
             // time to bounce
             if(fabs(ortho)<layer_width)
@@ -61,19 +61,17 @@ void node::checkStuck(ambientLine& ML)
                 PO->shift_x=-(ortho+2)*ML.ox;
                 PO->shift_y=- (ortho+2)*ML.oy;
 
-                proj=0.8*(vx*ML.ex+vy*ML.ey);
+                proj=0.3*(vx*ML.ex+vy*ML.ey);
                 ortho=0.8*(vx*ML.ox+vy*ML.oy);
-                float korrect=20;
+                static float korrect=200;
+                static float sqrt_korrect=sqrt(korrect);
 //                ortho=((ortho>0)?1:(-1))*(sqrt(ortho*ortho+korrect)-sqrt(korrect));
                 PO->shift_vx=ML.ex*proj-ML.ox*ortho;
                 PO->shift_vy=ML.ey*proj-ML.oy*ortho;
 
+                vx=((PO->shift_vx>0)?1:(-1))*(sqrt(PO->shift_vx*PO->shift_vx+korrect)-sqrt_korrect);
+                vy=((PO->shift_vy>0)?1:(-1))*(sqrt(PO->shift_vy*PO->shift_vy+korrect)-sqrt_korrect);
 
-//            qDebug()<<"crash "<<hhh;
-                vx=((PO->shift_vx>0)?1:(-1))*(sqrt(PO->shift_vx*PO->shift_vx+korrect)-sqrt(korrect));
-                vy=((PO->shift_vy>0)?1:(-1))*(sqrt(PO->shift_vy*PO->shift_vy+korrect)-sqrt(korrect));
-//                vx=PO->shift_vx;
-//                vy=PO->shift_vy;
 
                 for(int i=0;i<PO->nodes_N;i++)
                 {
