@@ -82,24 +82,28 @@ void node::checkStuck(ambientLine& ML)
                 PO->shift_x=-(ortho+2)*ML.ox;
                 PO->shift_y=- (ortho+2)*ML.oy;
 
-                proj=0.4*(vx*ML.ex+vy*ML.ey);
-                ortho=3*(vx*ML.ox+vy*ML.oy);
+                proj=0.3*(vx*ML.ex+vy*ML.ey);
+                ortho=2*(vx*ML.ox+vy*ML.oy);
                 static float korrect=0;
                 static float sqrt_korrect=sqrt(korrect);
                 //                ortho=((ortho>0)?1:(-1))*(sqrt(ortho*ortho+korrect)-sqrt(korrect));
                 PO->shift_vx=ML.ex*proj-ML.ox*ortho;
                 PO->shift_vy=ML.ey*proj-ML.oy*ortho;
 
-                vx=((PO->shift_vx>0)?1:(-1))*(sqrt(PO->shift_vx*PO->shift_vx+korrect)-sqrt_korrect);
-                vy=((PO->shift_vy>0)?1:(-1))*(sqrt(PO->shift_vy*PO->shift_vy+korrect)-sqrt_korrect);
+                //                vx=((PO->shift_vx>0)?1:(-1))*(sqrt(PO->shift_vx*PO->shift_vx+korrect)-sqrt_korrect);
+                //                vy=((PO->shift_vy>0)?1:(-1))*(sqrt(PO->shift_vy*PO->shift_vy+korrect)-sqrt_korrect);
+                vx=PO->shift_vx;
+                vy=PO->shift_vy;
 
 
                 for(int i=0;i<PO->nodes_N;i++)
                 {
-                    if((PO->ed[0]->nd+i)!=this)
+//                    if((PO->ed[0]->nd+i)!=this)
                     {
                         PO->ed[0]->nd[i].x+=PO->shift_x;
                         PO->ed[0]->nd[i].y+=PO->shift_y;
+                        PO->ed[0]->nd[i].vx+=-.5*ML.ox*ortho;
+                        PO->ed[0]->nd[i].vy+=-.5*ML.oy*ortho;
                     }
                 }
 

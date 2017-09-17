@@ -36,14 +36,15 @@ Dialog::Dialog(QWidget *parent) :
     PO=new PhysObject(ed,edges_N,nodes_N);//
 
 //  edge::size=nodes_N;
-    float cs=cos(1.05)*15;
-    float sn=sin(1.05)*15;
+    int hexa_s=17;
+    float cs=cos(1.05)*hexa_s;
+    float sn=sin(1.05)*hexa_s;
     nd=new node[nodes_N];
 
         nd[0]=node(PO,70,55);
-        nd[1]=node(PO,85,55);
-        nd[2]=node(PO,85+cs,55+sn);
-        nd[3]=node(PO,85,55+2*sn);
+        nd[1]=node(PO,70+hexa_s,55);
+        nd[2]=node(PO,70+hexa_s+cs,55+sn);
+        nd[3]=node(PO,70+hexa_s,55+2*sn);
         nd[4]=node(PO,70,55+2*sn);
         nd[5]=node(PO,70-cs,55+sn);
 
@@ -79,7 +80,7 @@ Dialog::Dialog(QWidget *parent) :
     //        ed[10]=new edge(nd,4,0);
     //        ed[11]=new edge(nd,5,1);
 //        PO->shift(-80,0);
-    PO->shift(320,0);
+    PO->shift(300,0);
 
 
     timer=new QTimer(this);
