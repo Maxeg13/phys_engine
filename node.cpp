@@ -3,6 +3,7 @@
 #include <QDebug>
 node::node(PhysObject* _PO,int a, int b)
 {
+    limb=0;
     crashed=0;
     PO=_PO;
     x=a;
@@ -14,6 +15,12 @@ node::node(PhysObject* _PO,int a, int b)
     for(int i=0;i<3;i++)
         clr[i]=rand()%10*25;
 }
+
+node::node(PhysObject* _PO,int a, int b, bool c):node( _PO, a,  b)
+{
+limb=1;
+}
+
 node::node()
 {
     vx=0;
@@ -83,7 +90,7 @@ void node::checkStuck(ambientLine& ML)
                 PO->shift_y=- (ortho+2)*ML.oy;
 
                 proj=0.2*(vx*ML.ex+vy*ML.ey);
-                ortho=1.5*(vx*ML.ox+vy*ML.oy);
+                ortho=(1.5*!limb+0.9*limb)*(vx*ML.ox+vy*ML.oy);
                 static float korrect=0;
                 static float sqrt_korrect=sqrt(korrect);
                 //                ortho=((ortho>0)?1:(-1))*(sqrt(ortho*ortho+korrect)-sqrt(korrect));

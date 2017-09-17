@@ -6,6 +6,7 @@ class PhysObject;
 class node
 {
 public:
+    bool limb;
     bool crashed;
     PhysObject* PO;
     static int size;
@@ -17,7 +18,8 @@ public:
     float clr[3];
     bool crash;
     node();
-    node(PhysObject*,int ,int );
+    node(PhysObject*, int , int );
+    node(PhysObject*, int , int , bool c);
     void spaceKinemat(float ,float);
 //    checkWall(ambientLine ML);
     void checkStuck(ambientLine &ML);

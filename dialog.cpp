@@ -19,9 +19,9 @@ QPointF MouseP[2];
 //int edges_N=11;
 //int nodes_N=6;
 
-//box
-int edges_N=5;
-int nodes_N=4;
+//hexapond
+int edges_N=7;
+int nodes_N=6;
 float f;
 edge** ed;
 QTimer *timer;
@@ -69,17 +69,21 @@ Dialog::Dialog(QWidget *parent) :
 //            ed[10]=new edge(nd,1,5);
 //        PO->shift(300,0);
 
-    //box
+    //hexapond
     nd[0]=node(PO,170,55);
-    nd[1]=node(PO,200,55);//nd[1].vy=.1;
-    nd[2]=node(PO,200,85);
+    nd[1]=node(PO,210,55);//nd[1].vy=.1;
+    nd[2]=node(PO,210,85);
     nd[3]=node(PO,170,85);
+    nd[4]=node(PO,170,115,1);
+    nd[5]=node(PO,210,115,1);
 
     ed[0]=new edge(nd,0,1);
     ed[1]=new edge(nd,1,2);
     ed[2]=new edge(nd,2,3);
     ed[3]=new edge(nd,3,0);
     ed[4]=new edge(nd,0,2);
+    ed[5]=new edge(nd,2,5);
+    ed[6]=new edge(nd,3,4);
 
 
 
