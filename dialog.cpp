@@ -9,12 +9,19 @@
 #include <math.h>
 #include <QDebug>
 #include "physobject.h"
+#include <QMouseEvent>
+#include <QPointF>
 //#include "vars.h"
 
 int lines_N=5;
-
+QPointF MouseP[2];
+//hexa
 int edges_N=11;
 int nodes_N=6;
+
+//box
+//int edges_N=5;
+//int nodes_N=4;
 float f;
 edge** ed;
 QTimer *timer;
@@ -26,73 +33,61 @@ Dialog::Dialog(QWidget *parent) :
     QDialog(parent)
 {
     ML=new ambientLine[lines_N]();
-    ML[0]=ambientLine(50,199,60,190,0);
+    ML[0]=ambientLine(30,195,60,190,0);
     ML[1]=ambientLine(60,190,120,300,0);
     ML[2]=ambientLine(120,300,300,280,0);
     ML[3]=ambientLine(300,280,325,300,0);
     ML[4]=ambientLine(324,300,410,100,0);
 
     ed=new edge*[edges_N];
-    PO=new PhysObject(ed,edges_N,nodes_N);//
+//    PO=new PhysObject(ed,edges_N,nodes_N,.05);//box
+    PO=new PhysObject(ed,edges_N,nodes_N,.55);//hexa
 
-//  edge::size=nodes_N;
     int hexa_s=17;
     float cs=cos(1.05)*hexa_s;
     float sn=sin(1.05)*hexa_s;
     nd=new node[nodes_N];
 
-        nd[0]=node(PO,70,55);
-        nd[1]=node(PO,70+hexa_s,55);
-        nd[2]=node(PO,70+hexa_s+cs,55+sn);
-        nd[3]=node(PO,70+hexa_s,55+2*sn);
-        nd[4]=node(PO,70,55+2*sn);
-        nd[5]=node(PO,70-cs,55+sn);
+    //hexa
+            nd[0]=node(PO,70,55);
+            nd[1]=node(PO,70+hexa_s,55);
+            nd[2]=node(PO,70+hexa_s+cs,55+sn);
+            nd[3]=node(PO,70+hexa_s,55+2*sn);
+            nd[4]=node(PO,70,55+2*sn);
+            nd[5]=node(PO,70-cs,55+sn);
 
+            ed[0]=new edge(nd,0,1);
+            ed[1]=new edge(nd,1,2);
+            ed[2]=new edge(nd,2,3);
+            ed[3]=new edge(nd,3,4);
+            ed[4]=new edge(nd,4,5);
+            ed[5]=new edge(nd,5,0);
+            ed[6]=new edge(nd,5,3);
+            ed[7]=new edge(nd,4,2);
+            ed[8]=new edge(nd,3,1);
+            ed[9]=new edge(nd,2,0);
+            ed[10]=new edge(nd,1,5);
+        PO->shift(300,0);
+
+    //box
 //    nd[0]=node(PO,170,55);
 //    nd[1]=node(PO,200,55);//nd[1].vy=.1;
 //    nd[2]=node(PO,200,85);
 //    nd[3]=node(PO,170,85);
 
-    ed[0]=new edge(nd,0,1);
-    ed[1]=new edge(nd,1,2);
-    ed[2]=new edge(nd,2,3);
-    ed[3]=new edge(nd,3,4);
-    ed[4]=new edge(nd,4,5);
-    ed[5]=new edge(nd,5,0);
-    ed[6]=new edge(nd,5,3);
-    ed[7]=new edge(nd,4,2);
-    ed[8]=new edge(nd,3,1);
-    ed[9]=new edge(nd,2,0);
-    ed[10]=new edge(nd,1,5);
+//    ed[0]=new edge(nd,0,1);
+//    ed[1]=new edge(nd,1,2);
+//    ed[2]=new edge(nd,2,3);
+//    ed[3]=new edge(nd,3,0);
+//    ed[4]=new edge(nd,0,2);
 
-//nd->vx;
 
-    //    ed[0]=new edge(nd,0,1);
-    //    ed[1]=new edge(nd,1,2);
-    //    ed[2]=new edge(nd,2,0);
-    //        ed[3]=new edge(nd,3,4);
-    //        ed[4]=new edge(nd,4,5);
-    //        ed[5]=new edge(nd,5,0);
-    //        ed[6]=new edge(nd,0,2);
-    //        ed[7]=new edge(nd,1,3);
-    //        ed[8]=new edge(nd,2,4);
-    //        ed[9]=new edge(nd,3,5);
-    //        ed[10]=new edge(nd,4,0);
-    //        ed[11]=new edge(nd,5,1);
-//        PO->shift(-80,0);
-    PO->shift(300,0);
 
 
     timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(drawing()));
     timer->start(40);
     this->update();
-    //    QThread* thread = new QThread( );
-    //    WK=new work();
-    //    WK->moveToThread(thread);
-    //    connect(thread,SIGNAL(started()),WK,SLOT(doWork()));
-    //    thread->start();
-
 }
 
 void Dialog::drawing()
@@ -115,7 +110,7 @@ void Dialog::mainCircle()
 
 void Dialog::paintEvent(QPaintEvent* e)
 {
-    for (int i=0;i<10;i++)
+    for (int i=0;i<20;i++)
         mainCircle();
 
     QPainter* painter=new QPainter(this);
@@ -132,6 +127,30 @@ void Dialog::paintEvent(QPaintEvent* e)
         painter->drawLine(ML[j].x[0],ML[j].y[0],ML[j].x[1],ML[j].y[1]);
 
     delete painter;
+}
+
+void Dialog::mousePressEvent(QMouseEvent *e)
+{
+
+    MouseP[0]=(e->pos());
+    QPointF V;
+    V=MouseP[0]-QPointF(PO->ed[0]->nd[0].x, PO->ed[0]->nd[0].y);
+    qDebug()<<V;
+    PO->shift(V.x(),V.y());
+
+}
+
+void Dialog::mouseMoveEvent(QMouseEvent *e)
+{
+    MouseP[1]=MouseP[0];
+    MouseP[0]=(e->pos());
+    QPointF S, V;
+    V=(MouseP[0]-MouseP[1])/200;
+    S=MouseP[0]-QPointF(PO->ed[0]->nd[0].x, PO->ed[0]->nd[0].y);
+//    qDebug()<<V;
+    PO->shift(S.x(),S.y());
+    PO->shiftV(V.x(),V.y());
+
 }
 
 Dialog::~Dialog()

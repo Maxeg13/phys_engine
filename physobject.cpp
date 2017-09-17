@@ -7,8 +7,9 @@ PhysObject::PhysObject()
 }
 
 
-PhysObject::PhysObject(edge **_ed, int n1, int n2)
+PhysObject::PhysObject(edge **_ed, int n1, int n2, float bc)
 {
+    bouncing_common=bc;
     crashed=0;
     shift_y=0;
     shift_x=0;
@@ -65,7 +66,7 @@ void PhysObject::correctV()
             nov=ed[0]->nd[i].ox*ed[0]->nd[i].vx+ed[0]->nd[i].oy*ed[0]->nd[i].vy;
 
             ed[0]->nd[i].vx=ed[0]->nd[i].ox*(nov)+ed[0]->nd[i].ex*(ev);
-            ed[0]->nd[i].vy=ed[0]->nd[i].oy*nov+ed[0]->nd[i].ey*(ev);
+            ed[0]->nd[i].vy=ed[0]->nd[i].oy*nov+ed[0]->nd[i].ey*ev;
             //            ex=vx/v;
             //            ey=vy/v;
             //            ox=-ey;
@@ -92,6 +93,15 @@ void PhysObject::shift(float _x, float _y)
     }
 }
 
+void PhysObject::shiftV(float _x, float _y)
+{
+    for(int i=0;i<nodes_N;i++)
+    {
+        ed[0]->nd[i].vx+=_x;
+        ed[0]->nd[i].vy+=_y;
+    }
+}
+
 void PhysObject::spaceKinemat()
 {
 
@@ -104,7 +114,7 @@ void PhysObject::spaceKinemat()
         for(int i=0;i<edges_N;i++)
             ed[i]->setV();
 
-        int cnt_lim=3000;
+        int cnt_lim=400;
         static int cnt=0;
         cnt++;
         if((cnt%(cnt_lim))==0)
