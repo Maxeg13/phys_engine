@@ -16,12 +16,12 @@
 int lines_N=5;
 QPointF MouseP[2];
 //hexa
-int edges_N=11;
-int nodes_N=6;
+//int edges_N=11;
+//int nodes_N=6;
 
 //box
-//int edges_N=5;
-//int nodes_N=4;
+int edges_N=5;
+int nodes_N=4;
 float f;
 edge** ed;
 QTimer *timer;
@@ -40,8 +40,8 @@ Dialog::Dialog(QWidget *parent) :
     ML[4]=ambientLine(324,300,410,100,0);
 
     ed=new edge*[edges_N];
-//    PO=new PhysObject(ed,edges_N,nodes_N,.05);//box
-    PO=new PhysObject(ed,edges_N,nodes_N,.55);//hexa
+    PO=new PhysObject(ed,edges_N,nodes_N,.05);//box
+//    PO=new PhysObject(ed,edges_N,nodes_N,.55);//hexa
 
     int hexa_s=17;
     float cs=cos(1.05)*hexa_s;
@@ -49,37 +49,37 @@ Dialog::Dialog(QWidget *parent) :
     nd=new node[nodes_N];
 
     //hexa
-            nd[0]=node(PO,70,55);
-            nd[1]=node(PO,70+hexa_s,55);
-            nd[2]=node(PO,70+hexa_s+cs,55+sn);
-            nd[3]=node(PO,70+hexa_s,55+2*sn);
-            nd[4]=node(PO,70,55+2*sn);
-            nd[5]=node(PO,70-cs,55+sn);
+//            nd[0]=node(PO,70,55);
+//            nd[1]=node(PO,70+hexa_s,55);
+//            nd[2]=node(PO,70+hexa_s+cs,55+sn);
+//            nd[3]=node(PO,70+hexa_s,55+2*sn);
+//            nd[4]=node(PO,70,55+2*sn);
+//            nd[5]=node(PO,70-cs,55+sn);
 
-            ed[0]=new edge(nd,0,1);
-            ed[1]=new edge(nd,1,2);
-            ed[2]=new edge(nd,2,3);
-            ed[3]=new edge(nd,3,4);
-            ed[4]=new edge(nd,4,5);
-            ed[5]=new edge(nd,5,0);
-            ed[6]=new edge(nd,5,3);
-            ed[7]=new edge(nd,4,2);
-            ed[8]=new edge(nd,3,1);
-            ed[9]=new edge(nd,2,0);
-            ed[10]=new edge(nd,1,5);
-        PO->shift(300,0);
+//            ed[0]=new edge(nd,0,1);
+//            ed[1]=new edge(nd,1,2);
+//            ed[2]=new edge(nd,2,3);
+//            ed[3]=new edge(nd,3,4);
+//            ed[4]=new edge(nd,4,5);
+//            ed[5]=new edge(nd,5,0);
+//            ed[6]=new edge(nd,5,3);
+//            ed[7]=new edge(nd,4,2);
+//            ed[8]=new edge(nd,3,1);
+//            ed[9]=new edge(nd,2,0);
+//            ed[10]=new edge(nd,1,5);
+//        PO->shift(300,0);
 
     //box
-//    nd[0]=node(PO,170,55);
-//    nd[1]=node(PO,200,55);//nd[1].vy=.1;
-//    nd[2]=node(PO,200,85);
-//    nd[3]=node(PO,170,85);
+    nd[0]=node(PO,170,55);
+    nd[1]=node(PO,200,55);//nd[1].vy=.1;
+    nd[2]=node(PO,200,85);
+    nd[3]=node(PO,170,85);
 
-//    ed[0]=new edge(nd,0,1);
-//    ed[1]=new edge(nd,1,2);
-//    ed[2]=new edge(nd,2,3);
-//    ed[3]=new edge(nd,3,0);
-//    ed[4]=new edge(nd,0,2);
+    ed[0]=new edge(nd,0,1);
+    ed[1]=new edge(nd,1,2);
+    ed[2]=new edge(nd,2,3);
+    ed[3]=new edge(nd,3,0);
+    ed[4]=new edge(nd,0,2);
 
 
 
