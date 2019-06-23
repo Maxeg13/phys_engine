@@ -20,7 +20,8 @@ public:
     float ey;
     float ox;
     float oy;
-    node* nd;
+    node* nd1;
+    node* nd2;
     void getLength();
 //    void checkStuck();
     void spaceKinemat();

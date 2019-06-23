@@ -40,13 +40,15 @@ Dialog::Dialog(QWidget *parent) :
     ML[4]=ambientLine(324,300,410,100,0);
 
     ed=new edge*[edges_N];
-    PO=new PhysObject(ed,edges_N,nodes_N,.05);//box
-//    PO=new PhysObject(ed,edges_N,nodes_N,.55);//hexa
+
+
+//    PO=new PhysObject(ed,edges_N,&nd,nodes_N,.55);//hexa
 
     int hexa_s=17;
     float cs=cos(1.05)*hexa_s;
     float sn=sin(1.05)*hexa_s;
     nd=new node[nodes_N];
+
 
     //hexa
 //            nd[0]=node(PO,70,55);
@@ -69,23 +71,31 @@ Dialog::Dialog(QWidget *parent) :
 //            ed[10]=new edge(nd,1,5);
 //        PO->shift(300,0);
 
-    //hexapond
-    nd[0]=node(PO,170,55);
-    nd[1]=node(PO,210,55);//nd[1].vy=.1;
-    nd[2]=node(PO,210,85);
-    nd[3]=node(PO,170,85);
-    nd[4]=node(PO,170,115,1);
-    nd[5]=node(PO,210,115,1);
+    //hexaPOnd
+
+    nd[0]=  node(&PO,170,55);
+    nd[1]= node(&PO,210,55);//nd[1].vy=.1;
+    nd[2]= node(&PO,210,85);
+    nd[3]= node(&PO,170,85);
+    nd[4]= node(&PO,170,115,1);
+    nd[5]= node(&PO,210,115,1);
+
 
     ed[0]=new edge(nd,0,1);
     ed[1]=new edge(nd,1,2);
     ed[2]=new edge(nd,2,3);
     ed[3]=new edge(nd,3,0);
     ed[4]=new edge(nd,0,2);
+
     ed[5]=new edge(nd,2,5);
     ed[6]=new edge(nd,3,4);
 
+PO=new PhysObject(ed,edges_N,&nd,nodes_N,.05);//box
 
+//  qDebug()<<PO;
+//  qDebug()<<nd[4].x;
+//  qDebug()<<PO->nd[4]->x;
+//  qDebug()<<nd[0];
 
 
     timer=new QTimer(this);
@@ -138,7 +148,7 @@ void Dialog::mousePressEvent(QMouseEvent *e)
 
     MouseP[0]=(e->pos());
     QPointF V;
-    V=MouseP[0]-QPointF(PO->ed[0]->nd[0].x, PO->ed[0]->nd[0].y);
+    V=MouseP[0]-QPointF(PO->ed[0]->nd1->x, PO->ed[0]->nd1->y);
     qDebug()<<V;
     PO->shift(V.x(),V.y());
 
@@ -150,7 +160,7 @@ void Dialog::mouseMoveEvent(QMouseEvent *e)
     MouseP[0]=(e->pos());
     QPointF S, V;
     V=(MouseP[0]-MouseP[1])/200;
-    S=MouseP[0]-QPointF(PO->ed[0]->nd[0].x, PO->ed[0]->nd[0].y);
+    S=MouseP[0]-QPointF(PO->ed[0]->nd1->x, PO->ed[0]->nd1->y);
 //    qDebug()<<V;
     PO->shift(S.x(),S.y());
     PO->shiftV(V.x(),V.y());

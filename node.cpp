@@ -1,11 +1,12 @@
 #include "node.h"
 #include "physobject.h"
 #include <QDebug>
-node::node(PhysObject* _PO,int a, int b)
+node::node(PhysObject** _PO ,int a, int b)
 {
     limb=0;
     crashed=0;
     PO=_PO;
+
     x=a;
     y=b;
     vx=0;
@@ -16,7 +17,7 @@ node::node(PhysObject* _PO,int a, int b)
         clr[i]=rand()%10*25;
 }
 
-node::node(PhysObject* _PO,int a, int b, bool c):node( _PO, a,  b)
+node::node(PhysObject** _PO,int a, int b, bool c):node(_PO, a,  b)
 {
 limb=1;
 }
@@ -27,7 +28,7 @@ node::node()
     vy=0;
 }
 
-void node::setV(float ax,float ay)
+void node::setV(float ax,float ay)//bad way
 {
     static float h1, h2;
     h1=vx+ax;
@@ -54,8 +55,8 @@ void node::setX()
 {
     x+=vx;
     y+=vy;
-    ex=x-PO->x;
-    ey=y-PO->y;
+    ex=x-(**PO).x;
+    ey=y-(**PO).y;
 
 
 }
@@ -73,45 +74,46 @@ void node::checkStuck(ambientLine& ML)
     float xh=x-ML.x[0];
     float yh=y-ML.y[0];
 
-    float proj=xh*ML.ex+yh*ML.ey;
+    float proj=xh*ML.ex+yh*ML.ey;// its so bad without vector algebra
     float ortho=xh*ML.ox+yh*ML.oy;
 
-
+// qDebug()<<(**PO).crashed;
     if((proj>0)&&(proj<ML.length))
     {
         int layer_width=20;
-        if((!ML.orient)&&(ortho>-2)||(ML.orient)&&(ortho<2))// 2 is for point
+        if((!ML.orient)&&(ortho>-2)||(ML.orient)&&(ortho<2))// 2 is for (*PO)int
             // time to bounce
             if(fabs(ortho)<layer_width)
             {
                 crashed=1;
-                PO->crashed=1;
-                PO->shift_x=-(ortho+2)*ML.ox;
-                PO->shift_y=- (ortho+2)*ML.oy;
+                (**PO).crashed=1;
+                (**PO).shift_x=-(ortho+2)*ML.ox;
+                (**PO).shift_y=- (ortho+2)*ML.oy;
 
                 proj=0.2*(vx*ML.ex+vy*ML.ey);
                 ortho=(1.5*!limb+0.9*limb)*(vx*ML.ox+vy*ML.oy);
                 static float korrect=0;
                 static float sqrt_korrect=sqrt(korrect);
                 //                ortho=((ortho>0)?1:(-1))*(sqrt(ortho*ortho+korrect)-sqrt(korrect));
-                PO->shift_vx=ML.ex*proj-ML.ox*ortho;
-                PO->shift_vy=ML.ey*proj-ML.oy*ortho;
+                (**PO).shift_vx=ML.ex*proj-ML.ox*ortho;
+                (**PO).shift_vy=ML.ey*proj-ML.oy*ortho;
 
-                //                vx=((PO->shift_vx>0)?1:(-1))*(sqrt(PO->shift_vx*PO->shift_vx+korrect)-sqrt_korrect);
-                //                vy=((PO->shift_vy>0)?1:(-1))*(sqrt(PO->shift_vy*PO->shift_vy+korrect)-sqrt_korrect);
-                vx=PO->shift_vx;
-                vy=PO->shift_vy;
+                //                vx=(((**PO).shift_vx>0)?1:(-1))*(sqrt((**PO).shift_vx*(**PO).shift_vx+korrect)-sqrt_korrect);
+                //                vy=(((**PO).shift_vy>0)?1:(-1))*(sqrt((**PO).shift_vy*(**PO).shift_vy+korrect)-sqrt_korrect);
+                vx=(**PO).shift_vx;
+                vy=(**PO).shift_vy;
 
 
-                for(int i=0;i<PO->nodes_N;i++)
+                for(int i=0;i<(**PO).nodes_N;i++)
                 {
-//                    if((PO->ed[0]->nd+i)!=this)
+//                    if(((**PO).ed[0]->nd+i)!=this)
                     {
-                        PO->ed[0]->nd[i].x+=PO->shift_x;
-                        PO->ed[0]->nd[i].y+=PO->shift_y;
+                        //recomment
+                        (*(**PO).nd)[i].x+=(**PO).shift_x;
+                        (*(**PO).nd)[i].y+=(**PO).shift_y;
 
-                        PO->ed[0]->nd[i].vx+=-PO->bouncing_common*ML.ox*ortho;
-                        PO->ed[0]->nd[i].vy+=-PO->bouncing_common*ML.oy*ortho;
+                        (*(**PO).nd)[i].vx+=-(**PO).bouncing_common*ML.ox*ortho;
+                        (*(**PO).nd)[i].vy+=-(**PO).bouncing_common*ML.oy*ortho;
                     }
                 }
 

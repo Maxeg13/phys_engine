@@ -6,6 +6,7 @@ class PhysObject
 {
 public:
     PhysObject();
+    node** nd;
     edge** ed;
     float bouncing_common;
     bool crashed;
@@ -14,7 +15,7 @@ public:
     float x,y,vx,vy;
     int edges_N;
     int nodes_N;
-    PhysObject(edge **ed, int n1, int n2, float bc);
+    PhysObject(edge **ed, int n1, node**, int n2, float bc);
     void spaceKinemat();
     void checkStuck(ambientLine &ML);
     void shift(float _x, float _y);
